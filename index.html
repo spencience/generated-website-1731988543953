@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Home page with a snake game">
+<meta name="keywords" content="home, snake game, phaser">
+<meta name="author" content="Spencience">
+<meta property="og:title" content="Home - Snake Game">
+<meta property="og:description" content="A simple snake game made with Phaser">
+<meta property="og:image" content="https://via.placeholder.com/1200x630.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@Spencience">
+<meta name="twitter:creator" content="@Spencience">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="manifest" href="manifest.json">
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp" integrity="sha384-LZw68/eoggnmE18asHMsdZgGecf+3JHMe3XQnAm+ryA0P/gYR4BHNBoSUXBNG3TP" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.min.js" integrity="sha256-mp7KjBGOZFNoEh9V7jYyou1taRzpeYMpL7r+A8L3+o=" crossorigin="anonymous"></script>
+<title>Home - Snake Game</title>
+</head>
+<body class="bg-gray-100">
+<header class="bg-gray-800 py-4 text-white">
+<nav class="container mx-auto flex justify-between items-center">
+<a href="#" class="text-lg font-bold">Spencience</a>
+<ul class="flex items-center space-x-4">
+<li><a href="#" class="text-sm">Home</a></li>
+<li><a href="#" class="text-sm">About</a></li>
+<li><a href="#" class="text-sm">Contact</a></li>
+</ul>
+</nav>
+</header>
+<main class="container mx-auto p-4 pt-6 md:p-6 lg:p-12 xl:p-24">
+<section class="bg-white rounded-lg shadow-md p-4 md:p-6 lg:p-12 xl:p-24">
+<h2 class="text-lg font-bold mb-4">Snake Game</h2>
+<div id="game" class="w-full h-screen"></div>
+</section>
+</main>
+<footer class="bg-gray-800 py-4 text-white text-center">
+<p class="text-sm">&copy; 2023 Spencience</p>
+</footer>
+<script>
+</script>
+<script>
+  // Initialize Phaser
+  var config = {
+    type: Phaser.AUTO,
+    parent: 'game',
+    width: 800,
+    height: 600,
+    scaleMode: Phaser.Scale.FIT,
+    scene: {
+      preload: preload,
+      create: create,
+      update: update
+    }
+  };
+
+  var game = new Phaser.Game(config);
+
+  function preload() {
+    this.load.image('snake', 'snake.png');
+    this.load.image('food', 'food.png');
+  }
+
+  var snake;
+  var food;
+  var score = 0;
+  var scoreText;
+
+  function create() {
+    snake = this.add.sprite(400, 300, 'snake');
+    food = this.add.sprite(100, 100, 'food');
+    scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
+  }
+
+  function update(time, delta) {
+    if (Phaser.Input.Keyboard.isDown(Phaser.Input.Keyboard.LEFT_KEY)) {
+      snake.x -= 5;
+    }
+    if (Phaser.Input.Keyboard.isDown(Phaser.Input.Keyboard.RIGHT_KEY)) {
+      snake.x += 5;
+    }
+    if (Phaser.Input.Keyboard.isDown(Phaser.Input.Keyboard.UP_KEY)) {
+      snake.y -= 5;
+    }
+    if (Phaser.Input.Keyboard.isDown(Phaser.Input.Keyboard.DOWN_KEY)) {
+      snake.y += 5;
+    }
+
+    // Collision detection
+    if (Phaser.Math.Distance.Between(snake.x, snake.y, food.x, food.y) < 20) {
+      score++;
+      scoreText.setText('Score: ' + score);
+      food.x = Phaser.Math.RND.between(0, 800);
+      food.y = Phaser.Math.RND.between(0, 600);
+    }
+  }
+</script>
+</main>
+</body>
+</html>
